@@ -1,0 +1,697 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+!! SON HALİ BOLUM 2 - 3 !!
+
+
+ömer yılmaz
+121518031
+cok degiskenli analiz vize ödevi
+
+
+###BOLUM 2
+
+
+
+
+```{r}
+A <- matrix(c(5,-9,6,-7,5,2,1,8),4,2)
+A
+
+dim(A) # 4x2 lik bir matrix 
+```
+
+```{r}
+a <- c(5,-9,6,-7,5,2,1,8)
+a
+
+dim(a) #dim fonk NULL cıktı cumku matrix degil
+
+is.matrix(a) # false cıktı matrix degil
+
+is.vector(a) # true cıktı vectordur a 
+
+length(a) #uzunlugu 8
+
+
+a <- as.matrix(a) # bu komut ile matrix yapabiliriz 8x1
+
+dim(a) # artık 8x1 bir matrix
+```
+
+
+```{r}
+
+a <- c(5,8,9)
+
+b <- c(3,7,5)
+
+
+A <- rbind(a,b) #satır olarak birlestırp matrx yapar
+A
+
+B <- cbind(a,b) # sutun olarak birlestırıp matrix yapar
+B
+is.matrix(B)
+
+dim(A)
+dim(B) # boyutları
+
+```
+
+
+
+```{r}
+günler <- c("pazartesi","salı","carsamba","persembe","cuma","cumartesi","pazar")
+sayı <- c(1,2,3,4,5,6,7)
+günler
+```
+
+
+
+```{r}
+hafta <- data.frame(günler,sayı)
+
+hafta
+```
+
+```{r}
+hafta[5,]
+
+hafta[,2]
+```
+
+
+
+
+
+transpoz
+```{r}
+a <- matrix(c(5,9,4,7,23,4), nrow = 2 , ncol  = 3)
+
+a
+
+
+b <- t(a)
+
+b
+
+```
+
+
+
+köşegen matix olusturma
+```{r}
+
+
+x <- diag(c(2,5,7,9))
+
+x
+```
+
+
+
+
+```{r}
+
+birim_matrix <- diag(c(1,1,1))
+
+6 * birim_matrix
+
+
+
+```
+
+
+
+
+matrix izi
+```{r}
+library(psych)
+
+a <- matrix(c(4,5,6,7,8,3,1,5,6),3,3)
+a
+
+tr(a)
+
+```
+
+
+
+
+
+
+
+
+matrixte 4 islem
+
+```{r}
+
+x <- matrix(c(65,89,12,65,87,36),2,3)
+y <- matrix(c(54,82,19,87,22,16),2,3)
+
+
+
+x + y
+
+
+x - y
+
+
+
+x * y # boyutlar uygun degil
+
+
+
+
+5 * x
+
+```
+
+
+
+uygun bıyutlu matrix carpımı
+
+```{r}
+
+c <- matrix(c(15,45,89,78,23,44),2,3)
+d <- matrix(c(1:12),3,4)
+
+
+c %*% d
+
+```
+
+
+
+
+
+
+matrix determınantı
+
+```{r}
+
+a <- matrix(c(5,9,7,2,5,6,4,1,8),3,3)
+
+
+det(a) #matrixin determinantı
+
+
+solve(a) #matrixin tersi
+
+round(solve(a),3)
+
+```
+
+
+
+
+özelliklerin uygulamanı gösterimi 
+
+```{r}
+
+
+A <- matrix(c(3,6,7,1),2,2)
+
+B <- matrix(c(9,-1,2,4),2,2)
+
+C <- diag(c(2,5,3))
+
+D <- matrix(c(1/3,2/3,2/3,-2/3,-1/3,2/3,2/3,-2/3,1/3),3,3)
+
+
+
+solve(A%*%B) #(AXB)^(-1)
+
+solve(B) %*% solve(A) #B^(-1) x (A^(-1))
+
+
+
+#GORULDUGU ILI SONUC BIRBIRINE ESİT OZELLIK GEREGİ
+
+#ROUND ILE SONUCLAR DAHA NET GORULUR
+
+round(solve(A%*%B),3)
+round(solve(B) %*% solve(A),3)
+```
+
+
+```{r}
+1/det(A)
+
+det(solve(A))
+
+det(A)^-1   # |A^(-1)| = |A|^(-1)  OZELLIGININ KANITI
+
+```
+
+
+kosegen matrisinin tersinin alinmasi
+```{r}
+C <- diag(c(2,5,3))
+
+solve(C)
+
+
+
+```
+
+
+ortagonal matrisinin tersi ile tanspozunun esit olmasinin gosterilmesi
+```{r}
+
+D <- matrix(c(1/3,2/3,2/3,-2/3,-1/3,2/3,2/3,-2/3,1/3),3,3)
+
+t(D)
+
+solve(D)   
+
+
+
+round(t(D),10) == round(solve(D),10)          #İKİSİ BİRBİRİNE ESİT
+
+```
+
+ortagpnel matrisinin transpozu ile carpimi birim matris verir
+
+```{r}
+round(t(D) %*% D,2) #D'x D = I
+```
+
+
+
+
+
+##MATRİSİN RANKI
+
+```{r}
+A <- matrix(c(2,3,9,4,6,7),3,2)
+
+qr(A)$rank
+
+
+#determinant 0 ise tam ranklı olmadıgı soylenebilir
+```
+
+
+
+#ÖZ DEGER VE ÖZ VEKTÖR
+
+
+```{r}
+
+N <- matrix(c(4,1,1,-2),2,2)
+
+eigen(N)$values
+
+eigen(N)$vectors
+
+```
+
+
+
+örnek
+
+```{r}
+
+A <- matrix(c(1/3,2/3,2/3,-2/3,-1/3,2/3,2/3,-2/3,1/3),3,3)
+
+det(A)
+
+
+tr(A)
+ 
+öz <-  eigen(A)$values
+
+öz <- as.matrix(öz)
+
+determinant <- öz[1]*öz[2]*öz[3]
+
+determinant
+
+iz <- sum(öz)
+
+iz   #sonuclar aynıdır 
+```
+
+
+
+
+#SPEKTURUM AYRISIMI
+```{r}
+
+C <- matrix(c(5,6,2,7,9,3,6,1,4),3,3)
+
+özdeger <- eigen(C)$values
+
+özdegermatrix <- diag(özdeger)
+
+özvektor <- eigen(C)$vector
+
+özdegermatrix
+
+özvektor
+
+
+
+B <- özvektor %*% özdegermatrix %*% t(özvektor)
+
+B
+
+```
+
+
+
+
+#pozitif tanumlı matris ve cholesky parcalanması
+
+```{r}
+A <- matrix(c(9,0,-9,0,16,9,-9,9,20),3,3)
+A
+
+#install.packages("matrixcalc")
+library(matrixcalc)
+
+is.positive.definite(A)  # amatrixi pozitif tanımlı cıktı
+
+
+library(base)
+T<- chol(A)
+
+
+t(T)%*%T  #ORJINAL MATRİSİ
+
+```
+
+
+
+
+
+
+
+
+
+###BOLUM 3
+
+
+```{r}
+
+x1 <- c(15,69,36,45,78,12,99,23,81)
+x2 <- c(1,6,8,4,5,3,6,7,3,9)
+x3 <- c(0.12,0.96,0.32,0.78,0.36,0.14,0.54,0.42,0.19,0.66)
+
+veri <- cbind(x1,x2,x3)
+veri <- t(veri)
+veri
+```
+
+ikinci yontem matrixin ıcıne tek seferde yazmak
+```{r}
+veri2 <- matrix(c(15,69,36,45,78,12,99,23,81,23, 
+                  +1,6,8,4,5,3,6,7,3,9, 
+                  +0.12,0.96,0.32,0.78,0.36,0.14,0.54,0.42,0.19,0.66), ncol = 3)
+
+veri2 <- t(veri2)
+
+veri2[,2]
+```
+
+
+```{r}
+
+data(iris) # iris verisini kullandım
+
+
+
+
+X1 <- iris$Sepal.Length  # veri setinden veri çekmek
+X1
+
+mean(X1) #ORTALAMA
+
+var(X1) #VARYANS
+ 
+sd(X1) #standart sapma
+
+```
+
+```{r}
+
+X2 <-iris$Petal.Length
+
+#x1 ve x2 arasında kolerasyon, kovaryans hesaplaması
+
+#KOVARYANS
+cov(X1,X2)
+
+
+#KOLERASYON
+cor(X1,X2)
+
+
+```
+
+
+
+```{r}
+
+iris <- iris[,-5]
+colMeans(iris) #sutun ort
+
+library(matrixStats)
+
+
+iris <- as.matrix(iris)
+colVars(iris) #sutun varyansu
+
+
+cov(iris) #covaryans
+
+cor(iris) #kolerasyon
+
+round(cor(iris),2) #virgulden sonra 2 hane
+
+```
+
+
+#standartlasma 
+
+```{r}
+
+iris <- as.matrix(iris)
+mu <- colMeans(iris)
+sig <- cov(iris)
+n <- nrow(iris)
+birv <- rep(1,n)
+
+#formul
+
+z <- (iris - birv %*% t(mu)) %*% solve(diag(sqrt(diag(sig))))
+z
+
+```
+
+
+
+
+```{r}
+#bu ıslem cok kolay bir sekilde scale ile yapılabilir
+
+
+
+scale(iris)
+
+
+```
+
+
+
+```{r}
+
+round(cor(iris),3)
+
+round(cov(z),3)
+
+round(cor(z),3)   #verinin ve z nın aynı
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+veri3 <- c(12,5,31,145,62,14,53,23,48,95,25,19)
+
+mean(veri3)
+
+var(veri3)
+
+sd(veri3)
+
+
+x.veri3 <- c(1254,5,31,145,62,14,53,23,48,95,25,19) # 12 yı 1254 olrak degiştirdik aykırı gozlem
+
+
+mean(x.veri3)
+
+var(x.veri3)
+
+sd(x.veri3) # aykırı gozlem degeleri cok etkılıyor
+
+```
+
+
+
+
+
+```{r}
+
+x <- c(1254,5,31,145,62,14,53,2334,48,95,25,19)
+
+median(x)
+
+mad(x,constant = 1)
+
+MADN <- mad(x,constant = 1) / 0.6745
+MADN
+
+```
+
+
+
+
+```{r}
+
+library(MASS)
+
+#MVE TAHMINI ICIN
+
+cov.rob(x,method = "mve")
+
+# ya da
+
+cov.mve(x)
+
+#MCD TAHMINI ICIN
+
+cov.rob(x, method = "mcd")
+
+#ya da
+
+cov.mcd(x)
+```
+
+
+
+
+
+
+
+
+
+
+
+ornek3.4 için iris3 kullandım
+```{r}
+
+data1 <- c(7.9,4.5,6.1,4.5,7.3,8.2,9.9,1.5,3.4,5.5)
+data2 <- c(15,32,17,26,28,16,14,29,28,120) # son deger aykırı gozlem
+
+data <- cbind(data1,data2)
+
+```
+```{r}
+str(data)
+
+
+#klasık tahmınler
+
+colMeans(data)
+
+cov(data)
+
+#MVE
+
+cov.rob(data, method = "mve")$center
+
+cov.rob(data, method = "mve")$cov
+
+cov.rob(data, method = "mve")$msg
+
+cov.rob(data, method = "mve")$crit
+
+cov.rob(data, method = "mve")$best
+
+cov.rob(data, method = "mve")$n.obs
+
+
+
+
+
+MVE.tahmin <- cov.mve(data)
+
+
+MVE.tahmin$cov
+
+
+
+
+
+#MCD TAHMINI
+
+
+MCD.tahmin <- cov.mcd(data)
+
+MCD.tahmin$center #mcd ortalama vektoru
+
+MCD.tahmin$cov # mcd kovaryans matrisi
+
+
+```
+
+
+
+
+
+
+
+
+
+```{r}
+
+library(robustbase)
+
+tolEllipsePlot(data, classic = T)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
